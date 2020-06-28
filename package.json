@@ -24,10 +24,6 @@
     "asar": "0.12.1"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-coffee": "~0.12.0",
-    "grunt-cli": "~0.1.8",
-    "grunt-coffeelint": "0.0.6",
-    "coffee-script": "^1.8.0"
+    "eslint": "^7.3.1"
   }
 }
