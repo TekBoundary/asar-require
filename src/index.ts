@@ -1,8 +1,8 @@
-(function() {
-	const asar = require('asar');
-	const fs = require('fs');
-	const path = require('path');
+import asar from 'asar'
+import fs from 'fs'
+import path from 'path'
 
+(function() {
 	let node_module;
 	try {
 		node_module = require('module');
@@ -10,7 +10,7 @@
 		node_module = null;
 	}
 
-	function splitPath(p) {
+	function splitPath(p: any) {
 		if (typeof p !== 'string') { return [false]; }
 		if (p.substr(-5) === '.asar') { return [true, p, '']; }
 		const index = p.lastIndexOf('.asar' + path.sep);
@@ -23,7 +23,7 @@
 	const gid = process.getgid != null ? process.getgid() : 0;
 	const fakeTime = new Date();
   
-	function asarStatsToFsStats (stats) {
+	function asarStatsToFsStats (stats: any) {
 		const isFile = !stats.files;
 		return {
 			dev: 1,
@@ -50,13 +50,13 @@
 
 	const readFileSync = fs.readFileSync;
 
-	fs.readFileSync = function(p, options) {
+	fs.readFileSync = function(p: any, options: any) {
 		const _ref = splitPath(p);
 		const isAsar = _ref[0];
 		const asarPath = _ref[1];
 		const filePath = _ref[2];
     
-		if (!isAsar) { return readFileSync.apply(this, arguments); }
+		if (!isAsar) { return readFileSync.apply(this, arguments as any); }
     
 		if (!options) {
 			options = { encoding: null, flag: 'r' };
@@ -76,33 +76,33 @@
 
 	const statSync = fs.statSync;
 
-	fs.statSync = function(p) {
+	(fs.statSync as any) = function (p: any) {
 		const _ref = splitPath(p);
 		const isAsar = _ref[0];
 		const asarPath = _ref[1];
 		const filePath = _ref[2];
     
-		if (!isAsar) { return statSync.apply(this, arguments); }
+		if (!isAsar) { return statSync.apply(this, arguments as any); }
 		return asarStatsToFsStats(asar.statFile(asarPath, filePath));
 	};
 
 	const realpathSync = fs.realpathSync;
 
-	fs.realpathSync = function(p) {
+	(fs.realpathSync as any) = function (p: any) {
 		const _ref = splitPath(p);
 		const isAsar = _ref[0];
 		const asarPath = _ref[1];
 		let filePath = _ref[2];
 
-		if (!isAsar) { return realpathSync.apply(this, arguments); }
+		if (!isAsar) { return realpathSync.apply(this, arguments as any); }
 		const stat = asar.statFile(asarPath, filePath);
 		if (stat.link) { filePath = stat.link; }
-		return path.join(realpathSync(asarPath), filePath);
+		return path.join(realpathSync(asarPath as any), filePath as any);
 	};
 
 	if (node_module && node_module._findPath) {
 		const module_findPath = node_module._findPath;
-		node_module._findPath = function(request) {
+		node_module._findPath = function(request: any) {
 			const _ref = splitPath(request);
 			const isAsar = _ref[0];
 			if (!isAsar) { return module_findPath.apply(this, arguments); }

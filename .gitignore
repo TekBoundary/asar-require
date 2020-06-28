@@ -4,3 +4,5 @@ lib/
 npm-debug.log
 *~
 *.swp
+build/
+dist/
