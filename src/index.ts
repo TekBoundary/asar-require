@@ -3,6 +3,8 @@ import fs from 'fs'
 import path from 'path'
 
 (function() {
+	console.log('RUNNING ASAR INJECTION')
+
 	let node_module;
 	try {
 		node_module = require('module');
@@ -11,6 +13,7 @@ import path from 'path'
 	}
 
 	function splitPath(p: any) {
+		console.log('splitPath')
 		if (typeof p !== 'string') { return [false]; }
 		if (p.substr(-5) === '.asar') { return [true, p, '']; }
 		const index = p.lastIndexOf('.asar' + path.sep);
@@ -24,6 +27,7 @@ import path from 'path'
 	const fakeTime = new Date();
   
 	function asarStatsToFsStats (stats: any) {
+		console.log('asarStatsToFsStats')
 		const isFile = !stats.files;
 		return {
 			dev: 1,
@@ -51,6 +55,7 @@ import path from 'path'
 	const readFileSync = fs.readFileSync;
 
 	fs.readFileSync = function(p: any, options: any) {
+		console.log('readFileSync')
 		const _ref = splitPath(p);
 		const isAsar = _ref[0];
 		const asarPath = _ref[1];
@@ -77,6 +82,7 @@ import path from 'path'
 	const statSync = fs.statSync;
 
 	(fs.statSync as any) = function (p: any) {
+		console.log('statSync')
 		const _ref = splitPath(p);
 		const isAsar = _ref[0];
 		const asarPath = _ref[1];
@@ -89,6 +95,7 @@ import path from 'path'
 	const realpathSync = fs.realpathSync;
 
 	(fs.realpathSync as any) = function (p: any) {
+		console.log('realpathSync')
 		const _ref = splitPath(p);
 		const isAsar = _ref[0];
 		const asarPath = _ref[1];
