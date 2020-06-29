@@ -13,7 +13,7 @@ import path from 'path'
 	}
 
 	function splitPath(p: any) {
-		console.log('splitPath')
+		console.log('splitPath', p)
 		if (typeof p !== 'string') { return [false]; }
 		if (p.substr(-5) === '.asar') { return [true, p, '']; }
 		const index = p.lastIndexOf('.asar' + path.sep);
